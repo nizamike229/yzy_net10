@@ -18,7 +18,7 @@ public class ClothingRequest
 
     [Required] public required char[] Sizes { get; set; }
 
-    [Required] public required string ImagePath { get; set; }
+    [Required] public required IFormFile Image { get; set; }
 }
 
 public class ClothingResponse
