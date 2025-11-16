@@ -6,6 +6,6 @@ public interface IClothingService
 {
     public Task<List<ClothingResponse>> GetClothingsAsync();
     public Task<ClothingResponse> GetByIdAsync(string id);
-    public Task CreateClothingAsync(ClothingRequest clothingRequest);
+    public Task CreateClothingAsync(ClothingRequest request);
     public Task DeleteAsync(string id);
 }
