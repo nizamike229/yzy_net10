@@ -18,7 +18,7 @@ public partial class ClothingsDbContext : DbContext
     public virtual DbSet<Clothing> Clothings { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlite($"Data Source={Path.Combine(AppContext.BaseDirectory, "products.sqlite")}");
+        => optionsBuilder.UseSqlite($"Data Source={Path.Combine(AppContext.BaseDirectory+"../../../", "products.sqlite")}");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
