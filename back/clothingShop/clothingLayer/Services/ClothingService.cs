@@ -11,30 +11,41 @@ public class ClothingService : IClothingService
 {
     private readonly ClothingsDbContext _clothingsDbContext;
     private readonly IWebHostEnvironment _env;
+    private ILogger<ClothingService> _logger;
 
-    public ClothingService(ClothingsDbContext clothingsDbContext, IWebHostEnvironment env)
+    public ClothingService(ClothingsDbContext clothingsDbContext, IWebHostEnvironment env,
+        ILogger<ClothingService> logger)
     {
         _clothingsDbContext = clothingsDbContext;
         _env = env;
+        _logger = logger;
     }
 
     public async Task<List<ClothingResponse>> GetClothingsAsync()
     {
         var clothings = await _clothingsDbContext.Clothings.AsNoTracking().ToListAsync();
         var response = clothings.Select(clothingRequest => clothingRequest.ToClothingResponse()).ToList();
+        _logger.LogInformation($"Returning {clothings.Count} clothings");
         return response;
     }
 
     public async Task<ClothingResponse> GetByIdAsync(string id)
     {
         var clothing = await _clothingsDbContext.Clothings.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
-        return clothing == null ? throw new Exception("Clothing not found") : clothing.ToClothingResponse();
+        if (clothing == null)
+        {
+            _logger.LogInformation($"Clothing not found: {id}");
+            throw new Exception("Clothing not found");
+        }
+
+        return clothing.ToClothingResponse();
     }
 
     public async Task CreateClothingAsync(ClothingRequest request)
     {
         if (await _clothingsDbContext.Clothings.FirstOrDefaultAsync(c => c.Title == request.Title) != null)
         {
+            _logger.LogInformation($"Clothing title already exists: {request.Title}");
             throw new Exception("Clothing title already exists");
         }
 
@@ -56,6 +67,7 @@ public class ClothingService : IClothingService
         var clothing = await _clothingsDbContext.Clothings.FirstOrDefaultAsync(c => c.Id == id);
         if (clothing == null)
         {
+            _logger.LogInformation($"Clothing not found: {id}");
             throw new Exception("Clothing not found");
         }
 
