@@ -45,7 +45,7 @@ public class ClothingController : ControllerBase
 
     [HttpPost]
     [ActionName("add")]
-    public async Task<ActionResult<object>> Add([FromBody] ClothingRequest clothingRequest)
+    public async Task<ActionResult<object>> Add([FromForm] ClothingRequest clothingRequest)
     {
         try
         {
