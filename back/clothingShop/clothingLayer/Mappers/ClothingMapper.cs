@@ -9,6 +9,7 @@ public static class ClothingMapper
     {
         return new ClothingResponse
         {
+            Id = clothing.Id,
             Title = clothing.Title,
             Description = clothing.Description,
             Price = clothing.Price,
